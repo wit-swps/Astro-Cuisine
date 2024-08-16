@@ -1,5 +1,6 @@
 // This is the root layout component for your Next.js app.
 // Learn more: https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#root-layout-required
+import { LayoutProps } from "@/.next/types/app/page";
 import { DM_Sans } from 'next/font/google'
 import { Space_Mono } from 'next/font/google'
 import { cn } from '@/lib/utils'
@@ -18,7 +19,7 @@ const fontBody = Space_Mono({
   weight: '400'
 })
 
-export default function Layout({ children }) {
+export default function Layout({ children }: LayoutProps) {
   return (
     <html lang="en">
       <body 
