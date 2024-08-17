@@ -54,7 +54,7 @@ export async function Product() {
     materialIdsToFilter.includes(item.MaterialId)
   );
 
-  console.log(filteredData);
+  //console.log(filteredData);
 
   let updatedStorageItems = filteredData.map((item: any) => {
     switch (item.MaterialTicker) {
@@ -62,21 +62,21 @@ export async function Product() {
         item.MaterialValue = 329;
         item.MaterialName = "Caffeinated Infusion";
         item.MaterialDescription =
-          "Blast off to hyper-focus with our galactic coffee! Perfect for staying alert during those long space shifts and avoiding cosmic burnout.";
+          "Brewed from stardust beans and dark matter. Energize your voyages and achieve “Warp Speed” with every sip!";
         item.bgcolor = "bg-lonestar-500";
         break;
       case "RAT":
         item.MaterialValue = 90;
         item.MaterialName = "Basic Rations";
         item.MaterialDescription =
-          "Blast off to hyper-focus with our galactic coffee! Perfect for staying alert during those long space shifts and avoiding cosmic burnout.";
+          "Your go-to essentials for any mission. Packed with nutrients and cosmic flavor, perfect for everyday space travel.";
         item.bgcolor = "bg-well-read-500";
         break;
       case "DW":
         item.MaterialValue = 39;
         item.MaterialName = "Drinking Water";
         item.MaterialDescription =
-          "Blast off to hyper-focus with our galactic coffee! Perfect for staying alert during those long space shifts and avoiding cosmic burnout.";
+          "Filtered through asteroid ice and starshine. Refresh yourself with a sip of the cosmos—may cause spontaneous stargazing.";
         item.bgcolor = "bg-well-read-500";
         break;
     }
@@ -103,9 +103,6 @@ export async function Product() {
         </div>
         <div className="p-6 space-y-4">
           <h3 className="text-xl font-bold">{item.MaterialName}</h3>
-          <p className="text-muted-foreground text-sm">
-            {item.MaterialDescription}
-          </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Label htmlFor="quantity" className="text-sm">
