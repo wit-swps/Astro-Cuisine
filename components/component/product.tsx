@@ -22,13 +22,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import 'dotenv/config'
-import { error } from "console";
 
 const fetchData = async () => {
   const res = await fetch(
     `https://rest.fnar.net/storage/wit.iwfa/df508ae96b989f70717935e0b7cff88d`,
     {
-      mode: 'cors',
       headers: {
         Accept: "application/json",
         Authorization: `${process.env.TOKEN}`,
@@ -38,7 +36,7 @@ const fetchData = async () => {
     }
   );
   if (!res.ok) {
-    return (<div>Refresh Page Should Fix this</div>)
+    throw new Error("Failed to fetch data");
   }
 
   return res.json();
