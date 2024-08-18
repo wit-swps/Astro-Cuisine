@@ -21,21 +21,24 @@ To read more about using these font, please visit the Next.js documentation:
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import 'dotenv/config'
+import { error } from "console";
 
 const fetchData = async () => {
   const res = await fetch(
     `https://rest.fnar.net/storage/wit.iwfa/df508ae96b989f70717935e0b7cff88d`,
     {
+      mode: 'cors',
       headers: {
         Accept: "application/json",
-        Authorization: "00537abd-4392-4950-ac48-e5fc8013ac5f",
+        Authorization: `${process.env.TOKEN}`,
         cache: "no-store",
       },
       next: { revalidate: 0 },
     }
   );
   if (!res.ok) {
-    window.location.reload();
+    return (<div>Refresh Page Should Fix this</div>)
   }
 
   return res.json();
