@@ -104,20 +104,25 @@ const Page = async ({ params }: PageProps) => {
   //console.log(filteredShipData);
   //console.log(filteredFuelData);
   //console.log(filteredFlightIds)
-  //console.log(filterFlightData[0])
+  //console.log(filterFlightData[0]);
   //console.log(filterFlightData[0].Segments[4])
   //console.log(StoreData)
   //console.log(stlFuelStore)
   //console.log(ftlFuelStore)
   //console.log(filterFlightData[0].CurrentSegmentIndex)
-  const status = filteredShipData[0].location
-    ? `Docking At ${filteredShipData[0].location}`
+  //console.log(filteredShipData[0].Location)
+  const status = filteredShipData[0].Location
+    ? `Docking At ${filteredShipData[0].Location}`
     : "In Transit";
 
-  // Sort segments by DepartureTimeEpochMs
-  const sortedSegments = [...filterFlightData[0].Segments].sort(
-    (a, b) => a.DepartureTimeEpochMs - b.DepartureTimeEpochMs
-  );
+  let sortedSegments: any[] = [];
+
+  if (filterFlightData.length !== 0) {
+    // Sort segments by DepartureTimeEpochMs
+    sortedSegments = [...filterFlightData[0].Segments].sort(
+      (a, b) => a.DepartureTimeEpochMs - b.DepartureTimeEpochMs
+    );
+  }
 
   const formatTime = (epochMs: any) => {
     return moment(epochMs).fromNow(); // Use `fromNow()` for relative time
@@ -160,10 +165,10 @@ const Page = async ({ params }: PageProps) => {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">
-                    WeightCapacity (T)
+                    WeightCapacity (t)
                   </span>
                   <span className="text-sm font-medium">
-                    {StoreData.WeightLoad} / {StoreData.WeightCapacity} T
+                    {StoreData.WeightLoad} / {StoreData.WeightCapacity}
                   </span>
                 </div>
                 <Progress
@@ -276,27 +281,37 @@ const Page = async ({ params }: PageProps) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedSegments.map((segment: any, index: any) => (
-                    <tr
-                      key={index}
-                      className={`border-b border-muted shadow-sm ${
-                        filterFlightData[0].CurrentSegmentIndex > index
-                          ? "line-through"
-                          : ""
-                      }`}
-                    >
-                      <td className="py-2">{index + 1}</td>
-                      <td className="py-2">{segment.Type}
-                      </td>
-                      <td className="py-2">{segment.Destination}</td>
-                      <td className="py-2">
-                        {formatTime(segment.ArrivalTimeEpochMs)}
-                      </td>
-                      <td className="py-2">
-                        {getDistance(segment.StlDistance, segment.FtlDistance)}
+                  {sortedSegments.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-2 text-center">
+                        No flight data available.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    sortedSegments.map((segment: any, index: any) => (
+                      <tr
+                        key={index}
+                        className={`border-b border-muted shadow-sm ${
+                          moment().valueOf() > segment.ArrivalTimeEpochMs
+                            ? "line-through"
+                            : ""
+                        }`}
+                      >
+                        <td className="py-2">{index + 1}</td>
+                        <td className="py-2">{segment.Type}</td>
+                        <td className="py-2">{segment.Destination}</td>
+                        <td className="py-2">
+                          {formatTime(segment.ArrivalTimeEpochMs)}
+                        </td>
+                        <td className="py-2">
+                          {getDistance(
+                            segment.StlDistance,
+                            segment.FtlDistance
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -307,7 +322,11 @@ const Page = async ({ params }: PageProps) => {
                   Estimated Landing Time:
                 </span>
                 <span className="text-sm font-medium">
-                  {formatTime(filterFlightData[0].ArrivalTimeEpochMs)}
+                  {filterFlightData.length > 0 &&
+                  filterFlightData[0] &&
+                  filterFlightData[0].ArrivalTimeEpochMs !== undefined
+                    ? formatTime(filterFlightData[0].ArrivalTimeEpochMs)
+                    : "N/A"}
                 </span>
               </div>
             </div>
