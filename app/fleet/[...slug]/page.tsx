@@ -14,7 +14,7 @@ const Page = async ({ params }: PageProps) => {
   const { slug } = params;
 
   const fetchShipData = async () => {
-    const res = await fetch(`https://rest.fnar.net/ship/ships/wit.iwfa`, {
+    const res = await fetch(`https://rest.fnar.net/ship/ships/${slug[0]}`, {
       headers: {
         Accept: "application/json",
         Authorization: `${process.env.TOKEN}`,
@@ -28,7 +28,7 @@ const Page = async ({ params }: PageProps) => {
     return res.json();
   };
   const fetchFuelData = async () => {
-    const res = await fetch(`https://rest.fnar.net/ship/ships/fuel/wit.iwfa`, {
+    const res = await fetch(`https://rest.fnar.net/ship/ships/fuel/${slug[0]}`, {
       headers: {
         Accept: "application/json",
         Authorization: `${process.env.TOKEN}`,
@@ -42,7 +42,7 @@ const Page = async ({ params }: PageProps) => {
     return res.json();
   };
   const fetchFlightData = async () => {
-    const res = await fetch(`https://rest.fnar.net/ship/flights/wit.iwfa`, {
+    const res = await fetch(`https://rest.fnar.net/ship/flights/${slug[0]}`, {
       headers: {
         Accept: "application/json",
         Authorization: `${process.env.TOKEN}`,
@@ -59,7 +59,7 @@ const Page = async ({ params }: PageProps) => {
   const shipData = await fetchShipData();
   const fuelData = await fetchFuelData();
   const flightData = await fetchFlightData();
-  const shipNameToFilter = [`${slug}`];
+  const shipNameToFilter = [`${slug[1]}`];
 
   const filteredShipData = shipData.filter((item: any) =>
     shipNameToFilter.includes(item.Name)
@@ -84,7 +84,7 @@ const Page = async ({ params }: PageProps) => {
 
   const fetchStorageData = async () => {
     const res = await fetch(
-      `https://rest.fnar.net/storage/wit.iwfa/${filteredShipData[0].StoreId}`,
+      `https://rest.fnar.net/storage/${slug[0]}/${filteredShipData[0].StoreId}`,
       {
         headers: {
           Accept: "application/json",
@@ -168,7 +168,7 @@ const Page = async ({ params }: PageProps) => {
                     WeightCapacity (t)
                   </span>
                   <span className="text-sm font-medium">
-                    {StoreData.WeightLoad} / {StoreData.WeightCapacity}
+                    {StoreData.WeightLoad.toFixed(2)} / {StoreData.WeightCapacity}
                   </span>
                 </div>
                 <Progress
@@ -184,7 +184,7 @@ const Page = async ({ params }: PageProps) => {
                     VolumeCapacity (m³)
                   </span>
                   <span className="text-sm font-medium">
-                    {StoreData.VolumeLoad} / {StoreData.VolumeCapacity}
+                    {StoreData.VolumeLoad.toFixed(2)} / {StoreData.VolumeCapacity}
                   </span>
                 </div>
                 <Progress
@@ -219,14 +219,14 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Weight</span>
                   <span className="text-sm font-medium">
-                    {(Math.round(stlFuelStore[0].WeightLoad) * 100) / 100} /{" "}
+                    {stlFuelStore[0].WeightLoad.toFixed(2)} /{" "}
                     {stlFuelStore[0].WeightCapacity} t
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Volume</span>
                   <span className="text-sm font-medium">
-                    {(Math.round(stlFuelStore[0].VolumeLoad) * 100) / 100} /{" "}
+                    {stlFuelStore[0].VolumeLoad.toFixed(2)} /{" "}
                     {stlFuelStore[0].VolumeCapacity} m³
                   </span>
                 </div>
@@ -254,14 +254,14 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Weight</span>
                   <span className="text-sm font-medium">
-                    {(Math.round(ftlFuelStore[0].WeightLoad) * 100) / 100} /{" "}
+                    {ftlFuelStore[0].WeightLoad.toFixed(2)} /{" "}
                     {ftlFuelStore[0].WeightCapacity} t
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Volume</span>
                   <span className="text-sm font-medium">
-                    {(Math.round(ftlFuelStore[0].VolumeLoad) * 100) / 100} /{" "}
+                    {ftlFuelStore[0].VolumeLoad.toFixed(2)} /{" "}
                     {ftlFuelStore[0].VolumeCapacity} m³
                   </span>
                 </div>
