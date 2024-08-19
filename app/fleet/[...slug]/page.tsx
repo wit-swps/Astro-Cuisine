@@ -28,14 +28,17 @@ const Page = async ({ params }: PageProps) => {
     return res.json();
   };
   const fetchFuelData = async () => {
-    const res = await fetch(`https://rest.fnar.net/ship/ships/fuel/${slug[0]}`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `${process.env.TOKEN}`,
-        cache: "no-store",
-      },
-      next: { revalidate: 0 },
-    });
+    const res = await fetch(
+      `https://rest.fnar.net/ship/ships/fuel/${slug[0]}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `${process.env.TOKEN}`,
+          cache: "no-store",
+        },
+        next: { revalidate: 0 },
+      }
+    );
     if (!res.ok) {
       throw new Error("Failed to fetch data");
     }
@@ -168,7 +171,10 @@ const Page = async ({ params }: PageProps) => {
                     WeightCapacity (t)
                   </span>
                   <span className="text-sm font-medium">
-                    {StoreData.WeightLoad.toFixed(2)} / {StoreData.WeightCapacity}
+                    {StoreData.WeightLoad % 1 === 0
+                      ? StoreData.WeightLoad
+                      : StoreData.WeightLoad.toFixed(2)}{" "}
+                    / {StoreData.WeightCapacity}
                   </span>
                 </div>
                 <Progress
@@ -184,7 +190,10 @@ const Page = async ({ params }: PageProps) => {
                     VolumeCapacity (m³)
                   </span>
                   <span className="text-sm font-medium">
-                    {StoreData.VolumeLoad.toFixed(2)} / {StoreData.VolumeCapacity}
+                    {StoreData.VolumeLoad % 1 === 0
+                      ? StoreData.VolumeLoad
+                      : StoreData.VolumeLoad.toFixed(2)}{" "}
+                    / {StoreData.VolumeCapacity}
                   </span>
                 </div>
                 <Progress
@@ -219,15 +228,19 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Weight</span>
                   <span className="text-sm font-medium">
-                    {stlFuelStore[0].WeightLoad.toFixed(2)} /{" "}
-                    {stlFuelStore[0].WeightCapacity} t
+                    {stlFuelStore[0].WeightLoad % 1 === 0
+                      ? stlFuelStore[0].WeightLoad
+                      : stlFuelStore[0].WeightLoad.toFixed(2)}{" "}
+                    / {stlFuelStore[0].WeightCapacity} t
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Volume</span>
                   <span className="text-sm font-medium">
-                    {stlFuelStore[0].VolumeLoad.toFixed(2)} /{" "}
-                    {stlFuelStore[0].VolumeCapacity} m³
+                    {stlFuelStore[0].VolumeLoad % 1 === 0
+                      ? stlFuelStore[0].VolumeLoad
+                      : stlFuelStore[0].VolumeLoad.toFixed(2)}{" "}
+                    / {stlFuelStore[0].VolumeCapacity} m³
                   </span>
                 </div>
               </div>
@@ -254,15 +267,19 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Weight</span>
                   <span className="text-sm font-medium">
-                    {ftlFuelStore[0].WeightLoad.toFixed(2)} /{" "}
-                    {ftlFuelStore[0].WeightCapacity} t
+                  {ftlFuelStore[0].WeightLoad % 1 === 0
+                      ? ftlFuelStore[0].WeightLoad
+                      : ftlFuelStore[0].WeightLoad.toFixed(2)}{" "}
+                    / {ftlFuelStore[0].WeightCapacity} t
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Volume</span>
                   <span className="text-sm font-medium">
-                    {ftlFuelStore[0].VolumeLoad.toFixed(2)} /{" "}
-                    {ftlFuelStore[0].VolumeCapacity} m³
+                  {ftlFuelStore[0].VolumeLoad % 1 === 0
+                      ? ftlFuelStore[0].VolumeLoad
+                      : ftlFuelStore[0].VolumeLoad.toFixed(2)}{" "}
+                    / {ftlFuelStore[0].VolumeCapacity} m³
                   </span>
                 </div>
               </div>
