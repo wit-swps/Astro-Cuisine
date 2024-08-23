@@ -65,6 +65,7 @@ export async function Product() {
         item.MaterialDescription =
           "Brewed from stardust beans and dark matter. Energize your voyages and achieve “Warp Speed” with every sip!";
         item.bgcolor = "bg-lonestar-500";
+        item.formURL = "https://form.jotform.com/242283783241457/prefill/66c88dad35616291450b7735ebca"
         break;
       case "RAT":
         item.MaterialValue = 90;
@@ -72,6 +73,7 @@ export async function Product() {
         item.MaterialDescription =
           "Your go-to essentials for any mission. Packed with nutrients and cosmic flavor, perfect for everyday space travel.";
         item.bgcolor = "bg-well-read-500";
+        item.formURL = "https://form.jotform.com/242283783241457/prefill/66c88df06363658c34ad8e7f988b"
         break;
       case "DW":
         item.MaterialValue = 39;
@@ -79,6 +81,7 @@ export async function Product() {
         item.MaterialDescription =
           "Filtered through asteroid ice and starshine. Refresh yourself with a sip of the cosmos—may cause spontaneous stargazing.";
         item.bgcolor = "bg-well-read-500";
+        item.formURL = "https://form.jotform.com/242283783241457/prefill/66c88e3535616290f89cf9daa96c"
         break;
     }
     return {
@@ -117,7 +120,7 @@ export async function Product() {
           </div>
           <Button size="lg" className="w-full">
             <Link
-              href="https://form.jotform.com/242283783241457"
+              href= {item.formURL}
               prefetch={true}
             >
               Place an order

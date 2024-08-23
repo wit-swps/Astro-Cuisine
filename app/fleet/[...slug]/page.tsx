@@ -143,7 +143,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <main className="flex min-h-screen items-center justify-center py-24 px-4">
-      <div className="flex flex-col xl:flex-row xl:grid xl:grid-cols-1 gap-2 z-10 w-full max-w-5xl items-center justify-center font-mono text-sm">
+      <div className="flex flex-col xl:flex-row xl:grid xl:grid-cols-1 gap-2 z-10 w-full max-w-4xl items-center justify-center font-mono text-sm">
         <Card className="w-full max-w-4xl shadow-lg border-2 border-muted-foreground rounded-3xl">
           <CardHeader className="flex items-center justify-between">
             <div className="flex items-center gap-4">
