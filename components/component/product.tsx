@@ -60,6 +60,7 @@ export async function Product() {
   let updatedStorageItems = filteredData.map((item: any) => {
     switch (item.MaterialTicker) {
       case "COF":
+        item.MaterialAmount = 0;
         item.MaterialValue = 329;
         item.MaterialName = "Caffeinated Infusion";
         item.MaterialDescription =
@@ -68,6 +69,7 @@ export async function Product() {
         item.formURL = "https://form.jotform.com/242283783241457/prefill/66c88dad35616291450b7735ebca"
         break;
       case "RAT":
+        item.MaterialAmount = 0;
         item.MaterialValue = 90;
         item.MaterialName = "Basic Rations";
         item.MaterialDescription =
@@ -76,6 +78,7 @@ export async function Product() {
         item.formURL = "https://form.jotform.com/242283783241457/prefill/66c88df06363658c34ad8e7f988b"
         break;
       case "DW":
+        item.MaterialAmount = 0;
         item.MaterialValue = 39;
         item.MaterialName = "Drinking Water";
         item.MaterialDescription =
@@ -89,7 +92,19 @@ export async function Product() {
     };
   });
 
+  
   return filteredData.map((item: any) => {
+    if (item.MaterialAmount === 0) {
+      return (
+        <div
+          key={item.MaterialId}
+          className="bg-background rounded-lg shadow-lg overflow-hidden w-full max-w-sm text-center p-6"
+        >
+          <h3 className="text-xl font-bold">{item.MaterialName}</h3>
+          <p className="text-red-500 text-lg font-semibold">We are out of stock</p>
+        </div>
+      );
+    }
     return (
       <div
         key={item.MaterialId}
