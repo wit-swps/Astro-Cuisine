@@ -4,14 +4,72 @@ interface PageProps {
   };
 }
 
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 import moment from "moment";
 import "dotenv/config";
 
 const Page = async ({ params }: PageProps) => {
   const { slug } = params;
+  if (slug[1] === undefined) {
+    const fetchShipData = async () => {
+      const res = await fetch(`https://rest.fnar.net/ship/ships/${slug[0]}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `${process.env.TOKEN}`,
+          cache: "no-store",
+        },
+        next: { revalidate: 0 },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      return res.json();
+    };
+    const shipData = await fetchShipData();
+    return (
+      <main className="flex min-h-screen items-center justify-center py-24 px-4">
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-8 text-center">
+          {shipData[0].UserNameSubmitted} FLEET
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {shipData.map((ship: any) => (
+            <Card
+              key={ship.Registration}
+              className="overflow-hidden transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+            >
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-semibold mb-4">{ship.Name}</h2>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <RadarIcon className="w-5 h-5 mr-2 text-blue-500" />
+                    <span>{ship.Registration}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <FlagIcon className="w-5 h-5 mr-2 text-red-500" />
+                    {ship.Location === '' ? 'Traveling through the void' : ship.Location}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="">
+                <Link href={`/fleet/${slug[0]}/${ship.Registration}`} className="w-full">
+                  <Button className="w-full bg-primary hover:bg-primary-dark transition-colors duration-300">
+                    <RocketIcon className="w-4 h-4 mr-2" />
+                    Explore Vessel Information
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </div>
+      </main>
+    );
+  }
 
   const fetchShipData = async () => {
     const res = await fetch(`https://rest.fnar.net/ship/ships/${slug[0]}`, {
@@ -62,10 +120,11 @@ const Page = async ({ params }: PageProps) => {
   const shipData = await fetchShipData();
   const fuelData = await fetchFuelData();
   const flightData = await fetchFlightData();
-  const shipNameToFilter = [`${slug[1]}`];
+  const shipRegistration = [`${slug[1]}`];
+  const shipNameToFilter = shipData[0].Name;
 
   const filteredShipData = shipData.filter((item: any) =>
-    shipNameToFilter.includes(item.Name)
+    shipRegistration.includes(item.Registration)
   );
 
   const filteredFuelData = fuelData.filter((item: any) =>
@@ -267,7 +326,7 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Weight</span>
                   <span className="text-sm font-medium">
-                  {ftlFuelStore[0].WeightLoad % 1 === 0
+                    {ftlFuelStore[0].WeightLoad % 1 === 0
                       ? ftlFuelStore[0].WeightLoad
                       : ftlFuelStore[0].WeightLoad.toFixed(2)}{" "}
                     / {ftlFuelStore[0].WeightCapacity} t
@@ -276,7 +335,7 @@ const Page = async ({ params }: PageProps) => {
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-sm font-medium">Volume</span>
                   <span className="text-sm font-medium">
-                  {ftlFuelStore[0].VolumeLoad % 1 === 0
+                    {ftlFuelStore[0].VolumeLoad % 1 === 0
                       ? ftlFuelStore[0].VolumeLoad
                       : ftlFuelStore[0].VolumeLoad.toFixed(2)}{" "}
                     / {ftlFuelStore[0].VolumeCapacity} m³
